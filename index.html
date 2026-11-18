@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b161a">
+  <meta name="description" content="Lighthouse — боевой браузерный прототип: световая пушка, цепные реакции и улучшения оружия.">
+  <title>Lighthouse — цепная реакция</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 42 50" fill="none" aria-hidden="true">
+        <path d="M12 45 17 13h8l5 32H12ZM13 45h16M17 12h8l-2-7h-4l-2 7ZM10 16l-7 2M32 16l7 2M19 20h4M17 31h8M21 5V1" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 45V35h4v10" stroke="currentColor" stroke-width="1.55"/>
+      </svg>
+      <div>
+        <div class="brand-title">LIGHTHOUSE</div>
+        <div class="eyebrow brand-subtitle">ПОКА ГОРИТ МАЯК</div>
+      </div>
+    </div>
+    <div class="top-status"><span class="indicator"></span> <span id="topStatus">БОЕВОЙ ПРОТОТИП / 02</span></div>
+    <button id="helpBtn" class="help-btn" type="button">Как играть <span class="help-circle">?</span></button>
+  </header>
+
+  <main class="layout">
+    <section class="sea-panel" aria-label="Поле боя">
+      <div class="stage" id="stage">
+        <canvas id="sea" width="960" height="720" aria-label="Океан вокруг маяка. Наведи курсор и нажми левую кнопку для импульса."></canvas>
+        <div id="battleTag" class="battle-tag">360° · НОЧНАЯ ВАХТА</div>
+        <div id="streak" class="streak" aria-live="polite"></div>
+        <div id="toast" class="toast" aria-live="polite"></div>
+        <div id="overlay" class="overlay" role="dialog" aria-modal="true"></div>
+      </div>
+      <div class="stage-bottom">
+        <div><kbd>ЛКМ</kbd> огонь <kbd>ПКМ</kbd> метка <kbd>Q</kbd> режим <kbd>E</kbd> подрыв</div>
+        <div><kbd>P</kbd> пауза <kbd>R</kbd> заново</div>
+      </div>
+    </section>
+
+    <aside class="dashboard">
+      <div class="side-title"><span>ПОСТ СМОТРИТЕЛЯ</span><span class="gold">✦</span></div>
+      <section class="readout health-readout">
+        <div class="muted-row"><span>Целостность Маяка</span><span id="healthStatus" class="small-caps">СТАБИЛЬНО</span></div>
+        <div class="health-number"><strong id="healthValue">100</strong><span>%</span></div>
+        <div class="track"><div id="healthBar" class="fill health-fill" style="width:100%"></div></div>
+      </section>
+
+      <section class="readout">
+        <div class="muted-row"><span>Световая пушка</span><span class="gold">◉</span></div>
+        <div id="gunStatus" class="gun-title">Готова к импульсу</div>
+        <div id="gunDetail" class="minor">Наведи на стаю · 2,1 с / заряд</div>
+        <div class="track"><div id="chargeBar" class="fill charge-fill" style="width:100%"></div></div>
+        <div class="charge-tokens" id="chargeTokens"><span class="charge-token active"></span></div>
+        <div id="modeLabel" class="eyebrow mode-label">ОБЫЧНЫЙ ИМПУЛЬС</div>
+      </section>
+
+      <section class="readout">
+        <div class="side-title"><span>МОДУЛЬ ОРУДИЯ</span><span id="moduleLevel" class="gold"></span></div>
+        <div id="moduleName" class="module-name">Базовая оптика</div>
+        <div id="moduleDetail" class="minor">Выбор нового модуля — после первой волны.</div>
+        <button id="toggleModeBtn" class="soft-btn hidden" type="button">Переключить режим</button>
+        <button id="detonateBtn" class="soft-btn hidden" type="button">Подорвать метки</button>
+      </section>
+
+      <section class="readout stats">
+        <div class="stat"><span>Волна</span><strong id="waveStat">— <small>/ 05</small></strong></div>
+        <div class="stat"><span>Угроз в волне</span><strong id="threatStat">—</strong></div>
+        <div class="stat"><span>Повержено</span><strong id="killStat">0</strong></div>
+        <div class="stat"><span>Лучшая цепь</span><strong id="bestStat" class="gold">×0</strong></div>
+      </section>
+      <div class="action-line">
+        <button id="pauseBtn" class="soft-btn wide" type="button">Ⅱ &nbsp; Пауза</button>
+        <button id="restartBtn" class="square-btn" type="button" title="Заново">↺</button>
+      </div>
+
+      <details class="fold">
+        <summary>Сигнатуры в море</summary>
+        <div class="legend-item"><span class="symbol ordinary"></span><div><b>Стая</b><p>Обычная цепная вспышка.</p></div></div>
+        <div class="legend-item"><span class="symbol runner"></span><div><b>Бегун</b><p>Быстрее, меньший радиус.</p></div></div>
+        <div class="legend-item"><span class="symbol conductor"></span><div><b>Проводник</b><p>Вспышка на 40% дальше.</p></div></div>
+      </details>
+      <details class="fold" id="parameterFold">
+        <summary>Параметры реакции</summary>
+        <div class="parameter"><label for="radiusInput">Радиус вспышки <output id="radiusValue">52</output></label><input id="radiusInput" type="range" min="34" max="90" step="2" value="52"></div>
+        <div class="parameter"><label for="durationInput">Длительность света <output id="durationValue">1,25 с</output></label><input id="durationInput" type="range" min=".6" max="2.2" step=".05" value="1.25"></div>
+        <div class="parameter"><label for="reloadInput">Перезарядка <output id="reloadValue">2,1 с</output></label><input id="reloadInput" type="range" min=".9" max="4" step=".1" value="2.1"></div>
+        <label class="checkbox-line"><input id="showRadii" type="checkbox"> Показывать радиусы вспышек</label>
+        <button class="soft-btn wide" id="resetSettingsBtn" type="button">Исходные значения</button>
+      </details>
+      <details class="fold" id="testingFold">
+        <summary>Испытательная акватория</summary>
+        <p class="muted-text">Повторяемая расстановка для сравнения усилений. Вариант модуля применяется после перезапуска опыта.</p>
+        <label class="field-label" for="testModule">Модуль пушки</label>
+        <select id="testModule"><option value="none">Базовая оптика</option><option value="capacitor">Дополнительный накопитель</option><option value="delayed">Отложенная вспышка</option><option value="bridge">Переход через разрыв</option></select>
+        <label class="field-label" for="testLevel">Уровень</label>
+        <select id="testLevel"><option value="1">I</option><option value="2">II</option></select>
+        <button id="startTestBtn" class="accent-btn wide" type="button">Повторить опыт</button>
+        <button id="copyReportBtn" class="soft-btn wide" type="button">Скопировать отчёт</button>
+      </details>
+      <button id="testShortcut" class="goto-test" type="button">◉ &nbsp; Испытать модули <span>→</span></button>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <span>СВЕТ ПЕРЕДАЁТСЯ. ТЬМА ПРИБЛИЖАЕТСЯ.</span>
+    <span>ПРОТОТИП 02 · ВЫБОР МЕНЯЕТ ОРУЖИЕ · <a href="https://github.com/alekseypilishkov-gif/lighthouse-chain-night">GITHUB</a></span>
+  </footer>
+</div>
+<script src="./game.js" defer></script>
+</body>
+</html>
