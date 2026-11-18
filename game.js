@@ -92,10 +92,10 @@
     var formations=[
       {x:-275,y:-163,t:"ordinary"},{x:-248,y:-178,t:"ordinary"},{x:-222,y:-154,t:"ordinary"},
       {x:-266,y:-129,t:"ordinary"},{x:-236,y:-118,t:"conductor"},
-      {x:-146,y:-112,t:"runner"},{x:-116,y:-120,t:"ordinary"},{x:-90,y:-146,t:"ordinary"},
-      {x:-78,y:-105,t:"ordinary"},{x:-63,y:-72,t:"conductor"},
-      {x:10,y:-185,t:"ordinary"},{x:37,y:-202,t:"ordinary"},{x:65,y:-177,t:"ordinary"},
-      {x:82,y:-143,t:"runner"},{x:109,y:-155,t:"ordinary"},
+      {x:-146,y:-232,t:"runner"},{x:-116,y:-240,t:"ordinary"},{x:-90,y:-266,t:"ordinary"},
+      {x:-78,y:-225,t:"ordinary"},{x:-63,y:-192,t:"conductor"},
+      {x:10,y:-280,t:"ordinary"},{x:37,y:-300,t:"ordinary"},{x:65,y:-275,t:"ordinary"},
+      {x:82,y:-243,t:"runner"},{x:109,y:-255,t:"ordinary"},
       {x:250,y:108,t:"ordinary"},{x:272,y:137,t:"ordinary"},{x:220,y:139,t:"conductor"},
       {x:265,y:170,t:"runner"}
     ];
