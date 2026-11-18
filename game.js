@@ -690,8 +690,11 @@
     else if(action==="selectModule")chooseModule(node.dataset.module);
     else if(action==="copy")copyReport();
     else if(action==="closeHelp"){
-      if(overlay.dataset.previous==="battle"){s.phase="battle";hideOverlay();}
-      else showOverlay(s.phase==="intro"?"intro":"pause");
+      var previous=overlay.dataset.previous;
+      if(previous==="battle"){s.phase="battle";hideOverlay();}
+      else if(["intro","workshop","clear","pause","defeat","victory","testclear"].includes(previous)){
+        showOverlay(previous);
+      }else showOverlay("intro");
     }
   });
   canvas.addEventListener("pointermove",function(e){setPointer(pointerPosition(e));});
@@ -727,8 +730,9 @@
   $("toggleModeBtn").addEventListener("click",toggleShotMode);
   $("detonateBtn").addEventListener("click",detonateMarks);
   $("helpBtn").addEventListener("click",function(){
-    if(s.phase==="battle"){s.phase="pause";showOverlay("help","battle");}
-    else showOverlay("help",s.phase==="intro"?"intro":"pause");
+    var previous=s.phase;
+    if(previous==="battle")s.phase="pause";
+    showOverlay("help",previous);
   });
   window.addEventListener("blur",function(){if(s.phase==="battle")setPhase("pause");});
   bindSettings();
